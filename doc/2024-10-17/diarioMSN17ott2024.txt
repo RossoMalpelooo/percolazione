@@ -1,0 +1,23 @@
+
+rand(20)<0.7
+R = rand(20)<0.7
+sum(R)
+sum(ans)
+sum(sum(R))
+400*0.7
+R = rand(20)<0.7;sum(sum(R))
+50*50*0.7
+R = rand(50)<0.7;sum(sum(R))
+R = rand(20)<0.7;sum(sum(R))
+R = rand(100)<0.7;sum(sum(R))
+R = rand(L)<p;abs(sum(sum(R))-L*L*p)/(L*L*p)
+L = 20
+p=0.7
+R = rand(L)<p;abs(sum(sum(R))-L*L*p)/(L*L*p)
+L = 100
+R = rand(L)<p;abs(sum(sum(R))-L*L*p)/(L*L*p)
+L = 1e3
+R = rand(L)<p;abs(sum(sum(R))-L*L*p)/(L*L*p)
+R = rand(24)<0.6
+find(R)
+R(ans)

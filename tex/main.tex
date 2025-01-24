@@ -1,0 +1,69 @@
+\documentclass[journal]{IEEEtran}
+\renewcommand{\IEEEkeywordsname}{Keywords}
+
+\usepackage[italian]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+
+\setlength{\marginparwidth}{2cm}
+\usepackage[italian, textsize=small, textwidth=2cm]{todonotes}
+
+\usepackage{hyperref}
+\usepackage{url}
+\usepackage{tikz}
+\usetikzlibrary{shapes.geometric, arrows}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{listings}
+\usepackage{caption}
+\renewcommand{\lstlistingname}{Codice}
+
+\newcommand{\bigo}[1]{\ensuremath{O\left({#1}\right)}}
+\usepackage{booktabs}
+\usepackage{mathtools}
+\DeclarePairedDelimiter\bra{\langle}{\rvert}
+\DeclarePairedDelimiter\ket{\lvert}{\rangle}
+\DeclarePairedDelimiterX\braket[2]{\langle}{\rangle}{#1\,\delimsize\vert\,\mathopen{}#2}
+\usepackage{amsmath, amssymb}
+
+\usepackage{graphicx}
+\graphicspath{ {./img/} }
+
+\usepackage{amsthm}
+
+\theoremstyle{definition}
+\newtheorem{definition}{Definizione}
+
+\begin{document}
+
+\title{Introduzione alla teoria della percolazione}
+
+\author{\IEEEauthorblockN{Leonardo Ongari}
+\IEEEauthorblockA{\textit{Università degli studi di Parma} \\
+Cremona, Italia\\
+leonardo.ongari@studenti.unipr.it}\\
+}
+
+\maketitle
+
+\begin{abstract}
+	La teoria della percolazione si occupa di sviluppare modelli matematici per descrivere il 
+	fenomeno fisico della percolazione, caratterizzato dallo scorrimento di un \textit{fluido} 
+	all'interno di un \textit{mezzo}. In questa relazione vengono mostrate le caratteristiche
+	principali dei modelli, le nozioni teoriche associate ed alcune analisi sugli algoritmi 
+	utilizzabili per effettuare simulazioni consistenti.   
+\end{abstract}
+
+\begin{IEEEkeywords}
+Percolazione, Modelli, Simulazioni
+\end{IEEEkeywords}
+
+\input{sections/introduzione}
+\input{sections/background}
+\input{sections/implementazione}
+% \input{sections/risultati}
+% \input{sections/conclusione}
+
+\bibliographystyle{IEEEtran}
+\bibliography{main}
+
+\end{document}
