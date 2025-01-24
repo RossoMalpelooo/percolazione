@@ -1,4 +1,4 @@
-function res = CercaCluster(L, p)
+function res = CercaCluster2(L, p)
 % CercaCluster trova i cluster su un reticolo L x L con probabilità p di
 % avere un sito colorato
 %
@@ -15,7 +15,7 @@ function res = CercaCluster(L, p)
 %       res.percolazioneLR: valore di esistenza di percolazione partendo
 %       dal bordo sinistro al bordo destro
 
-
+% creazione reticolo e bordi
 res.matrice = zeros(L + 2);
 aux = rand(L) < p;
 res.matrice(2:end-1, 2:end-1) = aux;
@@ -25,8 +25,10 @@ res.percolazioneLR = 0;
 
 res.p = p;
 
+% creazione label dei cluster con bordi
 res.label = zeros(L + 2);
 
+% label cluster corrente 
 labelC = 1;
 
 valid = find(res.matrice);
@@ -73,9 +75,11 @@ for iter = 1:length(valid)
 
 end
 
+% rimozione bordi
 res.label = res.label(2 : end - 1, 2 : end - 1);
 res.matrice = res.matrice(2 : end - 1, 2 : end - 1);
 
+% check su presenza dello stesso cluster sui bordi
 auxL = unique(res.label(1:L));
 left = auxL(auxL > 0);
 

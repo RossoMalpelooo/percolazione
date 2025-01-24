@@ -1,3 +1,5 @@
+% INCOMPLETO !
+
 function res = CercaCluster(L, p)
 
 res.matrice = rand(L) < p;
@@ -20,6 +22,7 @@ for ii = 1 : (L * L)
             if (elemento )
 
             j = j + 1;
+            end
         end
         
         labelC = labelC + 1;

@@ -4,9 +4,21 @@
 Un metodo efficace per l'astrazione del concetto consiste 
 in una rappresentazione tramite un reticolo, in inglese ``lattice''.
 
+% \begin{definition}[Reticolo]
+%     Un reticolo è un insieme di punti (siti), ciascuno in grado di identificare un 
+%     ordine locale per il riconoscimento dei primi vicini.
+%     I siti sono collegati tra di loro tramite degli archi (legami), che 
+%     possono esistere solo tra due primi vicini.
+% \end{definition}
+
 \begin{definition}[Reticolo]
-    Un reticolo è un insieme di punti o nodi (siti) connessi da archi (legami), 
-    ciascuno in grado di identificare un ordine locale per il riconoscimento dei primi vicini.
+    Un reticolo $L$ di dimensione $n$ è una coppia $\langle S, B \rangle$, dove:
+    \begin{itemize}
+        \item $S = \left\{ s_i : i \in \mathbb{N} , \, 0 \leq i < n \right\}$ è l'insieme dei siti;
+        \item $B = \left\{ (s_i, s_j) \in S^2 \, : \text{$s_i$ e $s_j$ siano primi vicini} \right\}$ è 
+        
+        l'insieme dei legami.
+    \end{itemize}
 \end{definition}
 
 In un reticolo in cui vale questa relazione è possibile descrivere due tipi di percolazione: 
@@ -25,10 +37,9 @@ In un reticolo in cui vale questa relazione è possibile descrivere due tipi di 
 \subsection*{Percolazione di legame}
 È la prima versione del modello fornita da Broadbent e Hammersley \cite{broadbent}.
 Ogni legame ha probabilità $p$ di essere ``aperto'', quindi
-probabilità $1-p$ di essere ``chiuso''. Se due siti formano un legame aperto, vi è un 
-collegamento diretto, quindi possono essere considerati primi vicini. Al contrario, un 
-legame chiuso elimina il collegamento tra i due siti nel reticolo.
-In questa versione, ``avviene percolazione'' se esiste un percorso (insieme di legami) 
+probabilità $1-p$ di essere ``chiuso''. Se due siti formano un legame aperto, vi è una
+connessione diretta tra i due. Al contrario, un legame chiuso elimina la connessione.
+In questa versione, ``avviene percolazione'' se esiste un percorso (insieme di connessioni dirette) 
 che attraversa l'intero reticolo. La percolazione può verificarsi 
 sia in verticale (alto-basso) sia in orizzontale (sinistra-destra).
 
@@ -45,11 +56,12 @@ del fenomeno. Nonostante la somiglianza, vi sono differenze concettuali che si
 riflettono anche nel calcolo di alcuni valori caratteristici \cite{weisstein-bond,weisstein-site,weisstein-threshold}.
 
 \begin{definition}[Soglia di percolazione]
-    Sia $L$ un reticolo di taglia infinita\footnote{Con il termine ``infinito'' 
+    Sia $L$ un reticolo di dimensione infinita\footnote{Con il termine ``infinito'' 
     si fa riferimento all'estensione intuitiva delle varie proprietà della struttura,
     come avviene in matematica per il concetto di \textit{limite all'infinito}.}. 
-    Sia $p$ la probabilità di occupazione dei siti o di apertura 
-    dei legami, a seconda del modello scelto.
+    Sia $p$ la probabilità di occupazione di un sito o di apertura 
+    di un legame, a seconda del modello scelto. 
+    Sia $p$ uguale per ogni elemento del reticolo.
     La soglia di percolazione per $L$ è definita come la 
     probabilità $p_c$ tale per cui:
     \begin{itemize}
@@ -66,16 +78,16 @@ riflettono anche nel calcolo di alcuni valori caratteristici \cite{weisstein-bon
 \end{figure}
 
 È possibile visualizzare il concetto di soglia nel grafico mostrato in 
-figura \ref{fig:threshold}. Nel grafico, l'asse delle ascisse è associato alla 
+figura \ref{fig:threshold}, in cui l'asse delle ascisse è associato alla 
 probabilità $p$, mentre l'asse delle ordinate è associato alla probabilità
-che avvenga percolazione $p_perc$.
+che avvenga percolazione $p_{perc}$.
+
 Nei casi reali, ovvero per reticoli di taglia finita, non è possibile stabilire
 un'affermazione così forte. 
-
 Ciò che è possibile preservare dalla definizione 
 è che esiste un \textbf{punto critico} $p_c$ relativo alla probabilità $p$, oltre 
-al quale è molto probabile che avvenga percolazione e, al contrario, al di sotto
-del quale è molto improbabile che questo si verifichi.
+al quale è più probabile che avvenga percolazione e, al contrario, al di sotto
+del quale è meno probabile che questo si verifichi.
 
 \begin{table}[ht!]
     \centering
@@ -102,7 +114,7 @@ del quale è molto improbabile che questo si verifichi.
 
 In letteratura sono presenti diversi studi sulle caratteristiche di vari 
 reticoli e i rispettivi valori di soglia. La tabella \ref{tab:percolation}
-mostra i punti critici per diversi reticoli regolari, ovvero in cui il reticolo è composto
+mostra i punti critici per diversi reticoli regolari, ovvero composti
 da elementi ripetuti della stessa forma. La colonna \textbf{Lattice} indica la forma 
 del reticolo, mentre le colonne \textbf{Site} e \textbf{Bond} distinguono i valori 
 in percolazione di sito e di legame, rispettivamente \cite{stauffer-threshold}.
@@ -111,4 +123,9 @@ In generale, la rappresentazione tramite occupazione dei siti è considerata
 più generica rispetto alla sua controparte, questo perché la percolazione di legame
 può essere riformulata in termini di percolazione di sito, 
 ma non si può affermare il contrario.
+I valori affiancati da un asterisco possono essere trovati tramite calcoli analitici,
+grazie ad alcune caratteristiche della forma del reticolo,
+sono quindi considerati \textit{conosciuti}. È interessante notare che la 
+tabella è composta per lo più da valori non conosciuti, cioè valori ottenuti da 
+simulazioni al calcolatore.
 
