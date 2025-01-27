@@ -47,8 +47,8 @@ sia in verticale (alto-basso) sia in orizzontale (sinistra-destra).
 In questo modello ogni sito ha una probabilità $p$ di essere occupato, di conseguenza
 probabilità $1-p$ di essere vuoto. In figura \ref{fig:ex-lattice} viene mostrato un 
 reticolo bidimensionale quadrato con nodi occupati (neri) e vuoti (bianchi). Questo è 
-il modello che verrà utilizzato per lo studio dell'argomento e dei vari algoritmi, verrà
-dunque approfondito più in dettaglio nella sezione \ref{sec:implementazione}.
+il modello che verrà utilizzato per lo studio dell'argomento e dei vari algoritmi e verrà
+approfondito in dettaglio nella sezione \ref{sec:implementazione}.
 
 \subsection*{Soglia di percolazione}
 I due modelli appena introdotti rappresentano soluzioni valide per lo studio 
@@ -129,3 +129,42 @@ sono quindi considerati \textit{conosciuti}. È interessante notare che la
 tabella è composta per lo più da valori non conosciuti, cioè valori ottenuti da 
 simulazioni al calcolatore.
 
+\subsection*{Cluster-finding}
+Nel modello che opera sui siti, la percolazione viene rilevata in seguito a un processo 
+di \textit{cluster-finding}, che consiste nel partizionare il reticolo in diverse 
+classi, tramite una relazione di equivalenza. 
+\begin{definition}
+Una relazione di equivalenza $R$ su un insieme $A$ è una relazione binaria 
+che gode delle seguenti proprietà:
+\begin{itemize}
+    \item $\forall x \in A : xRx$ (riflessività);
+    \item $\forall x,y \in A : xRy \rightarrow yRx$ (simmetria);
+    \item $\forall x,y,z \in A: xRy \wedge yRz \rightarrow xRz$ (transitività).
+\end{itemize}
+\end{definition}
+La relazione utilizzata è strettamente collegata al concetto di primi vicini.
+La definizione di primi vicini per un sito può variare a seconda della tipologia
+(forma e dimensioni) del reticolo utilizzato.
+
+\subsection*{Distribuzione binomiale}
+Per formalizzare in modo completo il modello, è necessario introdurre 
+la nozione di \textit{variabile aleatoria}. Non verrà trattato l'argomento 
+nel dettaglio, per lasciare più spazio alle implementazioni.
+In questo contesto, si introduce il concetto di variabile aleatoria come 
+una variabile il cui valore dipende da un evento non deterministico.
+Questo evento è descritto attraverso funzioni di densità specifiche, che seguono 
+leggi di \textit{distribuzione} della probabilità \cite{random}. Esistono diverse 
+tipologie di distribuzioni, tra cui quella binomiale che, riassumendo, descrive 
+un esperimento di prove ripetute.
+
+Questo tipo di distribuzione è caratterizzato da una funzione di densità 
+a 2 parametri
+\begin{equation}
+    \mathcal{B}_{n, p}(k) = \binom{n}{k} p^k (1-p)^{n-k}
+\end{equation}
+\label{eq:binom}
+
+dove $n$ rappresenta il numero di prove e $p$ la probabilità di successo di ciascuna.
+La variabile $k$ indica il risultato di cui vogliamo verificare la probabilità.
+L'equazione \ref{eq:binom} rappresenta \textit{`` la probabilità che si ottengano $k$ successi
+ripetendo $n$ volte una prova con probabilità di successo $p$ ''}.

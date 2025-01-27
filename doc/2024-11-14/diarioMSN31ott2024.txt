@@ -1,0 +1,95 @@
+binopdf(330,600,0.6)
+
+ans =
+
+    0.0015
+
+binopdf(360,600,0.6)
+
+ans =
+
+    0.0332
+
+bar(0:600,binopdf(0:600,600,0.6))
+ax = axis
+
+ax =
+
+   -1.2000  601.2000         0    0.0350
+
+ax(1:2) = [250,450]
+
+ax =
+
+  250.0000  450.0000         0    0.0350
+
+axis(ax)
+hold
+Current plot held
+plot(250:1:450,MYgss(250:1:450,360,12),'r')
+shg
+plot([330 330],[0 0.035],'k')
+shg
+quad(@MYgss,-5,-2.5)
+
+ans =
+
+    0.0062
+
+quad(@MYgss,-10,-2.5)
+
+ans =
+
+    0.0062
+
+load ../28ott/28ott.mat
+whos
+  Name            Size                   Bytes  Class     Attributes
+
+  L               1x4                       32  double              
+  MYmaxSz         4x5000x48            7680000  double              
+  MYnumCLU        4x5000x48            7680000  double              
+  MYsz            4x5000x48            7680000  double              
+  N               1x1                        8  double              
+  ans             1x1                        8  double              
+  ax              1x4                       32  double              
+  ii              1x1                        8  double              
+  ij              1x1                        8  double              
+  j               1x1                        8  double              
+  p               1x48                     384  double              
+  pp              1x1                        8  double              
+  probPercLR      4x48                    1536  double              
+  probPercTB      4x48                    1536  double              
+  res             1x1                   103440  struct              
+  sLR             1x1                        8  double              
+  sTB             1x1                        8  double              
+
+subplot(211),plot(p,probPercLR,'.-')
+shg
+subplot(212),plot(p,probPercTB,'.-')
+shg
+figure
+hist(squeeze(MYnumCLU(4,:,25))
+ hist(squeeze(MYnumCLU(4,:,25))
+                               ↑
+{Invalid expression. When calling a function or indexing a variable, use parentheses. Otherwise, check for mismatched
+delimiters.
+} 
+hist(squeeze(MYnumCLU(4,:,25)))
+shg
+figure
+hist(squeeze(MYnumCLU(4,:,38)))
+shg
+p(25)
+
+ans =
+
+    0.5625
+
+p(38)
+
+ans =
+
+    0.7500
+
+diary off

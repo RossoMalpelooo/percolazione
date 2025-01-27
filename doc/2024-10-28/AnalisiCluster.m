@@ -23,7 +23,7 @@ for ij = 1:length(L)
         sTB = 0;
         sLR = 0;
         for j = 1:N
-            res = CercaCluster2(L(ij), pp);
+            res = CercaCluster3(L(ij), pp);
     
             sTB = sTB + res.percolazioneTB;
             sLR = sLR + res.percolazioneLR;

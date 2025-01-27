@@ -1,2 +1,95 @@
 \section{Implementazione}
 \label{sec:implementazione}
+
+\subsection{Prima soluzione}
+
+In questa relazione verranno discusse proprietà e risultati 
+dell'algoritmo Hoshen-Kopelman \cite{Hoshen-Kopelman}.
+Tuttavia, per dimostrarne la correttezza e provarne l'efficienza,
+verranno effettuati dei confronti con un altro algoritmo personalizzato,
+la cui correttezza è ben nota data la sua semplicità.
+L'algoritmo \ref{cod:cluster-finding} mostra una prima soluzione 
+al problema del partizionamento. È composto da 2 iterazioni principali: 
+una ``esterna'' per tutti i siti colorati, e una ``interna'' per i siti 
+adiacenti (primi vicini). Quest'ultima si appoggia ad un vettore che 
+funge da \textit{pila}, le cui dimensioni variano in maniera dinamica.
+Lo scopo della pila è quello di aggiungere, ad ogni iterazione interna, 
+i siti occupati adiacenti al nodo corrente, per essere poi processati
+singolarmente.
+Ragionando sul funzionamento del codice, ci si convince piuttosto 
+facilmente della ridondanza causata dalla pila. In altri termini,
+un sito occupato può essere processato più volte:
+\begin{itemize}
+    \item una e una sola volta nell'iterazione esterna;
+    \item una volta per ogni vicino occupato;
+    \item altre volte per eventuali ``catene di vicinanze''.
+\end{itemize}
+
+Questo dettaglio fa sì che la complessità asintotica temporale \cite{sipser} 
+dell'algoritmo appartenga alla classe $\bigo{n^4}$ nel caso di un reticolo 
+bidimensionale $n \times n$. 
+
+\begin{lstlisting}[caption={Algoritmo standard di cluster-finding}, label={cod:cluster-finding}]
+function res = CercaCluster3(L, p)
+res.matrice=zeros(L+2);
+aux=rand(L)<p;
+res.matrice(2:end-1,2:end-1)=aux;
+res.percolazioneTB=0;
+res.percolazioneLR=0;
+res.cluSz=[];
+res.label=zeros(L+2);
+
+labelC=1;
+valid=find(res.matrice); % indici occupati
+
+for iter=1:length(valid)
+    ii=valid(iter);
+    if(res.label(ii)==0)
+        % nuovo cluster, esploro i vicini
+        pila=ii;
+        res.label(ii)=labelC;
+        j=1;
+        while(j<=length(pila))
+            elemento=pila(j);
+            % aggiungo i vicini alla pila
+            if(res.matrice(elemento-1) && res.label(elemento-1)==0)
+                pila(end+1)=elemento-1;
+                res.label(elemento-1)=labelC;
+            end
+            if(res.matrice(elemento+1) && res.label(elemento+1)==0)
+                pila(end+1)=elemento+1;
+                res.label(elemento+1)=labelC;
+            end
+            if (res.matrice(elemento-L-2) && res.label(elemento-L-2)==0)
+                pila(end+1)=elemento-L-2;
+                res.label(elemento-L-2)=labelC;
+            end
+            if (res.matrice(elemento+L+2) && res.label(elemento+L+2)==0)
+                pila(end+1)=elemento+L+2;
+                res.label(elemento+L+2)=labelC;
+            end
+            j=j+1;
+        end
+        res.cluSz(end+1)=length(pila); 
+        labelC=labelC+1;
+    end
+end
+
+
+res.label=res.label(2:end-1,2:end-1);
+res.matrice=res.matrice(2:end-1,2:end-1);
+left = clusters on the left edge
+right = clusters on the right edge
+if (~isempty(intersect(left,right)))
+    res.percolazioneLR=1;
+end
+
+auxT = unique(res.label(1:L:L*(L-1)+1));
+top = auxT(auxT>0);
+auxB = unique(res.label(L:L:L*L));
+bottom = auxB(auxB>0);
+if (~isempty(intersect(top, bottom)))
+    res.percolazioneTB = 1;
+end
+end
+\end{lstlisting}

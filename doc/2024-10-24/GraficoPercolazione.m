@@ -12,7 +12,7 @@ for L = 10:10:30
     
         s = 0;
         for j = 1:N
-            res = CercaCluster(L, pp);
+            res = CercaCluster2(L, pp);
     
             tmp = res.percolazioneTB || res.percolazioneLR;
     

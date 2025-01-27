@@ -30,6 +30,41 @@
 
 \usepackage{amsthm}
 
+\usepackage{listings}
+\usepackage{xcolor}
+% Configuration for pseudocode
+\usepackage{listings,newtxtt,xcolor}
+% Define custom colors
+\definecolor{keywordcolor}{rgb}{0.1, 0.1, 0.75}  % Blue for keywords
+\definecolor{stringcolor}{rgb}{0.1, 0.5, 0.1}    % Green for strings
+\definecolor{commentcolor}{rgb}{0.5, 0.5, 0.5}   % Gray for comments
+\definecolor{bgcolor}{rgb}{0.95, 0.95, 0.92}     % Light gray background
+
+% Configure lstset for Python
+\lstset{
+    language=Matlab,                    % Set the language to Python
+    backgroundcolor=\color{bgcolor},   % Background color for code
+    basicstyle=\ttfamily\footnotesize, 
+	keywordstyle=\color{keywordcolor}\bfseries, % Keywords in bold blue
+    stringstyle=\color{stringcolor},   % Strings in green
+    commentstyle=\color{commentcolor}\itshape, % Comments in italic gray
+    identifierstyle=,                  % Default identifier style
+    showstringspaces=false,            % Don't show spaces in strings
+    numbers=left,                      % Line numbers on the left
+    numberstyle=\tiny\color{commentcolor}, % Line number style
+    numbersep=5pt, % Spaziatura dei numeri di riga
+    %  frame=single, % Cornice intorno al blocco di codice
+    % framerule=0.1pt,
+    linewidth=0.98\columnwidth,
+    stepnumber=1,                      % Line numbers increment by 1
+    tabsize=4,                         % Tab size
+    breaklines=true,                   % Automatically break long lines
+    breakatwhitespace=true,            % Break lines only at whitespace
+    frame=single,                      % Draw a box around the code
+    captionpos=b,                      % Caption position: b for bottom
+    escapeinside={(*@}{@*)},           % Escape to LaTeX between (*@ and @*)
+}
+
 \theoremstyle{definition}
 \newtheorem{definition}{Definizione}
 
