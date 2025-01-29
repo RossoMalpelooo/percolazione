@@ -1,4 +1,4 @@
-function res = CercaCluster3(L, p)
+function res = CercaCluster3(aux)
 % CercaCluster trova i cluster su un reticolo L x L con probabilità p di
 % avere un sito colorato
 %
@@ -17,9 +17,9 @@ function res = CercaCluster3(L, p)
 %       In res.cluSz registriamo le taglie dei cluster trovati
 %       La lunghezza di res.cluSz ci ritorna il numero di cluster trovati
 
-
+L=size(aux,1);
 res.matrice = zeros(L + 2);
-aux = rand(L) < p;
+%aux = rand(L) < p;
 res.matrice(2:end-1, 2:end-1) = aux;
 
 res.percolazioneTB = 0;
@@ -27,7 +27,7 @@ res.percolazioneLR = 0;
 
 res.cluSz = [];
 
-res.p = p;
+%res.p = p;
 
 res.label = zeros(L + 2);
 
