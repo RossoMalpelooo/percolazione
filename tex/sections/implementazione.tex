@@ -1,14 +1,15 @@
 \section{Implementazione}
 \label{sec:implementazione}
 
-\subsection{Prima soluzione}
+\subsection*{Prima soluzione}
 
 In questa relazione verranno discusse proprietà e risultati 
 dell'algoritmo Hoshen-Kopelman \cite{Hoshen-Kopelman}.
 Tuttavia, per dimostrarne la correttezza e provarne l'efficienza,
-verranno effettuati dei confronti con un altro algoritmo personalizzato,
+verranno effettuati dei confronti con una versione personalizzata,
+che chiameremo algoritmo $A$,
 la cui correttezza è ben nota data la sua semplicità.
-L'algoritmo \ref{cod:cluster-finding} mostra una prima soluzione 
+Il Cod. \ref{alg:standard} mostra una prima soluzione 
 al problema del partizionamento. È composto da 2 iterazioni principali: 
 una ``esterna'' per tutti i siti colorati, e una ``interna'' per i siti 
 adiacenti (primi vicini). Quest'ultima si appoggia ad un vettore che 
@@ -25,71 +26,221 @@ un sito occupato può essere processato più volte:
     \item altre volte per eventuali ``catene di vicinanze''.
 \end{itemize}
 
-Questo dettaglio fa sì che la complessità asintotica temporale \cite{sipser} 
-dell'algoritmo appartenga alla classe $\bigo{n^4}$ nel caso di un reticolo 
-bidimensionale $n \times n$. 
+% Questo dettaglio fa sì che la complessità asintotica temporale \cite{sipser} 
+% dell'algoritmo appartenga alla classe $\bigo{n^4}$ nel caso di un reticolo 
+% bidimensionale $n \times n$. 
 
-\begin{lstlisting}[caption={Algoritmo standard di cluster-finding}, label={cod:cluster-finding}]
-function res = CercaCluster3(L, p)
-res.matrice=zeros(L+2);
-aux=rand(L)<p;
-res.matrice(2:end-1,2:end-1)=aux;
-res.percolazioneTB=0;
-res.percolazioneLR=0;
-res.cluSz=[];
-res.label=zeros(L+2);
+% \begin{lstlisting}[caption={Algoritmo standard di cluster-finding}, label={cod:cluster-finding}]
+% function res = CercaCluster3(L, p)
+% res.matrice=zeros(L+2);
+% aux=rand(L)<p;
+% res.matrice(2:end-1,2:end-1)=aux;
+% res.percolazioneTB=0;
+% res.percolazioneLR=0;
+% res.cluSz=[];
+% res.label=zeros(L+2);
 
-labelC=1;
-valid=find(res.matrice); % indici occupati
+% labelC=1;
+% valid=find(res.matrice); % indici occupati
 
-for iter=1:length(valid)
-    ii=valid(iter);
-    if(res.label(ii)==0)
-        % nuovo cluster, esploro i vicini
-        pila=ii;
-        res.label(ii)=labelC;
-        j=1;
-        while(j<=length(pila))
-            elemento=pila(j);
-            % aggiungo i vicini alla pila
-            if(res.matrice(elemento-1) && res.label(elemento-1)==0)
-                pila(end+1)=elemento-1;
-                res.label(elemento-1)=labelC;
-            end
-            if(res.matrice(elemento+1) && res.label(elemento+1)==0)
-                pila(end+1)=elemento+1;
-                res.label(elemento+1)=labelC;
-            end
-            if (res.matrice(elemento-L-2) && res.label(elemento-L-2)==0)
-                pila(end+1)=elemento-L-2;
-                res.label(elemento-L-2)=labelC;
-            end
-            if (res.matrice(elemento+L+2) && res.label(elemento+L+2)==0)
-                pila(end+1)=elemento+L+2;
-                res.label(elemento+L+2)=labelC;
-            end
-            j=j+1;
-        end
-        res.cluSz(end+1)=length(pila); 
-        labelC=labelC+1;
-    end
-end
+% for iter=1:length(valid)
+%     ii=valid(iter);
+%     if(res.label(ii)==0)
+%         % nuovo cluster, esploro i vicini
+%         pila=ii;
+%         res.label(ii)=labelC;
+%         j=1;
+%         while(j<=length(pila))
+%             elemento=pila(j);
+%             % aggiungo i vicini alla pila
+%             if(res.matrice(elemento-1) && res.label(elemento-1)==0)
+%                 pila(end+1)=elemento-1;
+%                 res.label(elemento-1)=labelC;
+%             end
+%             if(res.matrice(elemento+1) && res.label(elemento+1)==0)
+%                 pila(end+1)=elemento+1;
+%                 res.label(elemento+1)=labelC;
+%             end
+%             if (res.matrice(elemento-L-2) && res.label(elemento-L-2)==0)
+%                 pila(end+1)=elemento-L-2;
+%                 res.label(elemento-L-2)=labelC;
+%             end
+%             if (res.matrice(elemento+L+2) && res.label(elemento+L+2)==0)
+%                 pila(end+1)=elemento+L+2;
+%                 res.label(elemento+L+2)=labelC;
+%             end
+%             j=j+1;
+%         end
+%         res.cluSz(end+1)=length(pila); 
+%         labelC=labelC+1;
+%     end
+% end
 
 
-res.label=res.label(2:end-1,2:end-1);
-res.matrice=res.matrice(2:end-1,2:end-1);
-left = clusters on the left edge
-right = clusters on the right edge
-if (~isempty(intersect(left,right)))
-    res.percolazioneLR=1;
-end
+% res.label=res.label(2:end-1,2:end-1);
+% res.matrice=res.matrice(2:end-1,2:end-1);
+% left = clusters on the left edge
+% right = clusters on the right edge
+% if (~isempty(intersect(left,right)))
+%     res.percolazioneLR=1;
+% end
 
-auxT = unique(res.label(1:L:L*(L-1)+1));
-top = auxT(auxT>0);
-auxB = unique(res.label(L:L:L*L));
-bottom = auxB(auxB>0);
-if (~isempty(intersect(top, bottom)))
-    res.percolazioneTB = 1;
-end
-end
-\end{lstlisting}
+% auxT = unique(res.label(1:L:L*(L-1)+1));
+% top = auxT(auxT>0);
+% auxB = unique(res.label(L:L:L*L));
+% bottom = auxB(auxB>0);
+% if (~isempty(intersect(top, bottom)))
+%     res.percolazioneTB = 1;
+% end
+% end
+% \end{lstlisting}
+
+\begin{algorithm}
+    \caption{Pseudocodice dell'algoritmo $A$}
+    \label{alg:standard}
+    {\small
+    \begin{algorithmic}[1]
+    \State $largest\_label \gets 1$ 
+    \State $label \gets \text{zeros}[n\_columns, n\_rows]$
+    
+    \For{$[x,y] \gets [0,0]$ \textbf{to} $n\_columns,n\_rows$}
+        \If{$[x,y] = 1 \land label[x, y] = 0 $}
+            \State $pila \gets [x, y]$ 
+            \State $label[x, y] \gets largest\_label$
+            \State $j \gets 1$
+            
+            \While{$j \leq \text{length}(pila)$}
+                \State $elem \gets pila[j]$
+                
+                \State $x \gets elem[1], y \gets elem[2]$
+                \State $left \gets [x - 1, y]$
+                \State $right \gets [x + 1, y]$
+                \State $down \gets [x, y+1]$
+                \State $top \gets [x, y-1]$
+                
+                \If{$left = 1 \land label[left] = 0$}
+                    \State $\text{append } left \text{ to } pila$
+                    \State $label[left] \gets largest\_label$
+                \EndIf
+                
+                \If{$right = 1 \land label[right] = 0$}
+                    \State $\text{append } right \text{ to } pila$
+                    \State $label[right] \gets largest\_label$
+                \EndIf
+                
+                \If{$up = 1 \land label[up] = 0$}
+                    \State $\text{append } up \text{ to } pila$
+                    \State $label[up] \gets largest\_label$
+                \EndIf
+                
+                \If{$down = 1 \land label[down] = 0$}
+                    \State $\text{append } down \text{ to } pila$
+                    \State $label[down] \gets largest\_label$
+                \EndIf
+                
+                \State $j \gets j + 1$
+            \EndWhile
+            
+            \State $largest\_label \gets largest\_label + 1$
+        \EndIf
+    \EndFor
+    \end{algorithmic}
+    }
+\end{algorithm}
+
+\subsection*{Paradigma Union-Find}
+
+Come appena accennato, in questa relazione viene presentato l'algoritmo 
+Hoshen-Kopelman, che fa parte della famiglia di algoritmi \textit{union-find},
+utilizzati nel calcolo di componenti connesse e, in questo caso, per il processo 
+di cluster-finding. Questo paradigma prevede l'utilizzo di due procedure principali, che 
+ne compongono il nome:
+\begin{itemize}
+    \item \textit{Union}: effettua una fusione tra due insiemi disgiunti quando ci 
+    si accorge che appartengono in realtà alla stessa classe di equivalenza;
+    \item \textit{Find}: determina a quale insieme appartiene l'elemento in elaborazione.
+\end{itemize}
+
+\begin{algorithm}
+    \caption{Pseudocodice dell'algoritmo Hoshen-Kopelman}
+    \label{alg:HK}
+    {\small
+    \begin{algorithmic}[1]
+    \State $largest\_label \gets 0$
+    \State $label \gets \text{zeros}[n\_columns, n\_rows]$
+    \State $Lofl \gets [0:n\_columns]$
+    \\
+    \For{$[x,y] \gets [0,0]$ \textbf{to} $[n\_columns,n\_rows$}
+        \If{$[x, y] = 1$}
+            \State $left \gets label[x-1, y]$
+            \State $above \gets label[x, y-1]$
+            \If{$(left = 0) \land (above = 0)$}
+                \State $largest\_label \gets largest\_label + 1$
+                \State $tmp \gets largest\_label$
+            \ElsIf{$(left = 1) \land (above = 0)$}
+                \State $tmp \gets left$
+            \ElsIf{$(left = 0) \land (above = 1)$}
+                \State $tmp \gets above$
+            \Else
+                \State $tmp \gets \text{min}\{left,above\}$
+                \State $bad\_label \gets \text{max}\{left,above\}$
+                \State $\Call{Union}{bad\_label, tmp}$
+            \EndIf
+            \State $label[x,y] \gets tmp$
+        \EndIf
+    \EndFor
+    
+    \vspace{5pt}
+    \Procedure{Union}{$x, y$}
+        \State $Lofl[\Call{Find}{x}] \gets \Call{Find}{y}$
+    \EndProcedure
+
+    \vspace{5pt}
+    \Function{Find}{$x$}
+        \While{$Lofl[x] \neq x$}
+            \State $x \gets Lofl[x]$
+        \EndWhile
+        \State \Return $x$
+    \EndFunction
+    
+    \end{algorithmic}
+    }
+\end{algorithm}
+
+Nel Cod. \ref{alg:HK} vengono mostrati i passaggi per l'implementazione 
+del paradigma nel contesto della percolazione.
+Rispetto all'algoritmo iniziale, rimane un'iterazione sui siti per verificarne
+l'occupazione, ma appare diversa la logica applicata. In particolare, scompare
+l'utilizzo della pila con la conseguente ridondanza e, per 
+ogni sito occupato, vengono considerati solo due primi vicini: sopra (\textit{$above$}) 
+e a sinistra ($left$). Se nessuno dei due vicini è occupato, al sito 
+viene assegnata una nuova etichetta ($label$), aggiornata tramite un contatore;
+se soltato uno dei due vicini è occupato, il sito eredita la sua etichetta;
+se entrambi i vicini sono occupati e hanno la stessa etichetta, il comportamento
+è analogo al caso di un vicino occupato; se invece i vicini hanno etichette diverse, 
+il sito eredita quella minore, prestando attenzione al fatto che in realtà 
+le due facciano riferimento allo stesso cluster \cite{pseudoHK}.
+Infatti, in questo procedimento si possono avere siti di uno 
+stesso cluster con etichette diverse (provare per credere!).
+Quest'ultimo punto è cruciale: è necessario tenere conto di questa informazione
+senza impattare negativamente sul costo computazionale dell'algoritmo; una rinomina
+totale delle etichette sarebbe infatti troppo costosa e si perderebbe parte del vantaggio
+ottenuto rispetto all'algoritmo $A$.
+Per coprire questo aspetto, per ogni cluster si sceglie una etichetta 
+``di rappresentanza'', che chiameremo \textit{good label}. Ogni altra etichetta viene 
+considerata una \textit{bad label} e deve essere in qualche modo collegata alla rispettiva
+\textit{good label}. Il metodo di collegamento scelto consiste nell'utilizzo di un array 
+$Lofl$ (Label of label), che viene aggiornato durante l'esecuzione. 
+A questo proposito, entrano in gioco le nuove procedure:
+\begin{itemize}
+    \item \textit{Union}: ha il compito di collegare una \textit{bad label} ad una 
+    potenziale\footnotemark{} \textit{good label} e viene descritta facilmente in termini di \textit{Find};
+    \item \textit{Find}: viene implementata come iterazione di punto fisso 
+        della funzione rappresentata dall'array $Lofl$. In 
+        altri termini, si cerca in modo iterativo la condizione di arresto $Lofl[x]=x$.
+\end{itemize}
+\footnotetext{Con il termine ``potenziale'' si fa riferimento al fatto che, quando si effettua
+collegamento, non si può sapere se l'etichetta minore sia effettivamente una \textit{good label}, 
+perché potrebbe a sua volta essere collegata. Tuttavia, si può dire che tramite una catena di 
+collegamenti è possibile risalire ad una \textit{good label}.}
+

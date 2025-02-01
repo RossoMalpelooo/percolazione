@@ -13,29 +13,30 @@ countLabel=0;
 valid=find(res.matrice);
 %disp(res.matrice);
 for iter=1:length(valid)
-    ii=valid(iter);                          % indice sito
+    ii=valid(iter);                                         % indice
     leftLabel=res.label(ii-1);        
     upLabel=res.label(ii-L-2);  
 
-    if(leftLabel+upLabel==0)                 % vicini non occupati
+    if(leftLabel+upLabel==0)                                % new
         countLabel=countLabel+1;
         currentLabel=countLabel;
         res.lofl(currentLabel)=-1;
-    elseif(leftLabel*upLabel==0 || leftLabel-upLabel==0)
+    elseif(leftLabel*upLabel==0 || leftLabel-upLabel==0)    % find
         currentLabel=max(leftLabel,upLabel);
-        gLabel=findGoodLabel(currentLabel,res.lofl);
+        gLabel=findGL(currentLabel,res.lofl);
         res.lofl(gLabel)=res.lofl(gLabel)-1;
-    else
-        currentLabel=min(leftLabel,upLabel);       % due vicini occupati
+    else                                                    % union-find
+        currentLabel=min(leftLabel,upLabel);                
         bLabel=max(leftLabel,upLabel);
-        bLabel=findGoodLabel(bLabel,res.lofl);
-        gLabel=findGoodLabel(currentLabel,res.lofl);
-        if(bLabel~=gLabel)
-            res.lofl(gLabel)=res.lofl(gLabel)+res.lofl(bLabel)-1;
-            res.lofl(bLabel)=gLabel;
-        else
-            res.lofl(gLabel)=res.lofl(gLabel)-1;
-        end
+        % bLabel=find(bLabel,res.lofl);
+        % gLabel=find(currentLabel,res.lofl);
+        % if(bLabel~=gLabel)
+        %     res.lofl(gLabel)=res.lofl(gLabel)+res.lofl(bLabel)-1;
+        %     res.lofl(bLabel)=gLabel;
+        % else
+        %     res.lofl(gLabel)=res.lofl(gLabel)-1;
+        % end
+        res.lofl=union(bLabel,currentLabel,res.lofl);
     end
     %disp(res.lofl); % debug
     res.label(ii)=currentLabel;
@@ -44,10 +45,21 @@ end
 res.cluSz=res.lofl(find(res.lofl<0))*-1;
 end
 
-function goodLabel=findGoodLabel(label,map)
-    if(map(label)<0)
-        goodLabel=label;
+function goodLabel=findGL(x,Lofl)
+    if(Lofl(x)<0)
+        goodLabel=x;
     else
-        goodLabel=findGoodLabel(map(label),map);
+        goodLabel=findGL(Lofl(x),Lofl);
+    end
+end
+
+function Lofl=union(x,y,Lofl)
+    xRoot=findGL(x,Lofl);
+    yRoot=findGL(y,Lofl);
+    if(yRoot==xRoot)
+        Lofl(yRoot)=Lofl(yRoot)-1;
+    else
+        Lofl(yRoot)=Lofl(yRoot)+Lofl(xRoot)-1;
+        Lofl(xRoot)=yRoot;
     end
 end
