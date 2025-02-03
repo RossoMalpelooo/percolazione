@@ -20,12 +20,14 @@ in una rappresentazione tramite un reticolo, in inglese ``lattice''.
         l'insieme dei legami.
     \end{itemize}
 \end{definition}
-
+Due siti possono essere considerati primi vicini se, secondo l'ordinamento locale dei siti, hanno 
+distanza uguale a 1.
 In un reticolo in cui vale questa relazione è possibile descrivere due tipi di percolazione: 
-\begin{itemize}
-    \item percolazione di legame;
-    \item percolazione di sito.
-\end{itemize}
+percolazione di sito e percolazione di legame.
+% \begin{itemize}
+%     \item percolazione di legame;
+%     \item percolazione di sito.
+% \end{itemize}
 
 \begin{figure}
     \centering
@@ -156,14 +158,12 @@ Questo evento è descritto attraverso funzioni di densità specifiche, che seguo
 leggi di \textit{distribuzione} della probabilità \cite{random}. Esistono diverse 
 tipologie di distribuzioni, tra cui quella binomiale che, riassumendo, descrive 
 un esperimento di prove ripetute.
-
 Questo tipo di distribuzione è caratterizzato da una funzione di densità 
 a 2 parametri
 \begin{equation}
     \mathcal{B}_{n, p}(k) = \binom{n}{k} p^k (1-p)^{n-k}
 \end{equation}
 \label{eq:binom}
-
 dove $n$ rappresenta il numero di prove e $p$ la probabilità di successo di ciascuna.
 La variabile $k$ indica il risultato di cui vogliamo verificare la probabilità.
 L'equazione \ref{eq:binom} rappresenta \textit{`` la probabilità che si ottengano $k$ successi
