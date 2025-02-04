@@ -4,16 +4,19 @@ clc
 
 addpath('2024-10-28');
 
-N = 1000;
-p = 0.025:0.025:0.5;
-p = [p 0.5125:0.0125:0.7 0.725:0.025:1];
-L = [20 40 60 80];
+N = 500;
+% p = 0.025:0.025:0.5;
+% p = [p 0.5125:0.0125:0.7 0.725:0.025:1];
+% L = [20 40 60 80];
+L=80;
+p = 0.5125:0.0125:0.7;
 
 probPercTB3 = zeros(length(L),length(p));
 probPercLR3 = zeros(length(L),length(p));
 probPercTBHK = zeros(length(L),length(p));
 probPercLRHK = zeros(length(L),length(p));
 erroreTB = zeros(length(L),length(p));
+erroreLR = zeros(length(L),length(p));
 MYsz = zeros(length(L),N,length(p));
 MYmaxSz = zeros(length(L),N,length(p));
 MYnumCLU = zeros(length(L),N,length(p));
@@ -29,7 +32,8 @@ for ij = 1:length(L)
         sHKTB = 0;
         sHKLR = 0;
 
-        esp = zeros(N,1);
+        espTB = zeros(N,1);
+        espLR = zeros(N,1);
 
         for j = 1:N
             ret = rand(L(ij))<pp;
@@ -40,7 +44,8 @@ for ij = 1:length(L)
             %s3LR = s3LR + res3.percolazioneLR;
             sHKTB = sHKTB + resHK.percolazioneTB;
             sHKLR = sHKLR + resHK.percolazioneLR;
-            esp(j) = resHK.percolazioneTB;
+            espTB(j) = resHK.percolazioneTB;
+            espLR(j) = resHK.percolazioneLR;
 
             MYsz(ij,j,ii) = mean(resHK.cluSz);
             MYmaxSz(ij,j,ii) = max(resHK.cluSz);
@@ -52,7 +57,8 @@ for ij = 1:length(L)
         %probPercLR3(ij,ii) = s3LR / N;
         probPercTBHK(ij,ii) = sHKTB / N;
         probPercLRHK(ij,ii) = sHKLR / N;
-        erroreTB(ij,ii) = std(esp) / sqrt(N);
+        erroreTB(ij,ii) = std(espTB) / sqrt(N);
+        erroreLR(ij,ii) = std(espLR) / sqrt(N);
     
     end
     % subplot(221)
@@ -67,18 +73,26 @@ for ij = 1:length(L)
     % title('Algoritmo $A$: Left-Right','Interpreter','latex','FontSize',20)
     % xlabel('$p_{col}$','Interpreter','latex','FontSize',18);
     % ylabel('$p_{perc}$','Interpreter','latex','FontSize',18);
-    % subplot(223)
-    % hold on
-    % plot(p, probPercTBHK(ij,:),'.-')
-    % title('Algoritmo HK: Top-Down','Interpreter','latex','FontSize',20)
-    % xlabel('$p_{col}$','Interpreter','latex','FontSize',18);
-    % ylabel('$p_{perc}$','Interpreter','latex','FontSize',18);
-    % subplot(224)
-    % hold on
-    % plot(p, probPercLRHK(ij,:),'.-')
-    % title('Algoritmo HK: Left-Right','Interpreter','latex','FontSize',20)
-    % xlabel('$p_{col}$','Interpreter','latex','FontSize',18);
-    % ylabel('$p_{perc}$','Interpreter','latex','FontSize',18);
+    subplot(121)
+    axis([0.5 0.7 0.03 0.97])
+    cla;
+    hold on
+    grid on
+    errorbar(p, probPercTBHK(ij,:), erroreTB,'d','LineWidth',1,'MarkerSize',3)
+    title('Algoritmo HK: Top-Down','Interpreter','latex','FontSize',15)
+    xlabel('$p_{col}$','Interpreter','latex','FontSize',18);
+    ylabel('$p_{perc}$','Interpreter','latex','FontSize',18);
+    legend('TB');
+    subplot(122)
+    axis([0.5 0.7 0.03 0.97])
+    cla;
+    hold on
+    grid on
+    errorbar(p, probPercLRHK(ij,:), erroreLR,'d','LineWidth',1,'MarkerSize',3)
+    title('Algoritmo HK: Left-Right','Interpreter','latex','FontSize',15)
+    xlabel('$p_{col}$','Interpreter','latex','FontSize',18);
+    ylabel('$p_{perc}$','Interpreter','latex','FontSize',18);
+    legend('LR');
 
     % subplot(221)
     % hold on
