@@ -168,3 +168,38 @@ dove $n$ rappresenta il numero di prove e $p$ la probabilità di successo di cia
 La variabile $k$ indica il risultato di cui vogliamo verificare la probabilità.
 L'equazione \ref{eq:binom} rappresenta \textit{`` la probabilità che si ottengano $k$ successi
 ripetendo $n$ volte una prova con probabilità di successo $p$ ''}.
+
+\subsection{Distribuzione Gaussiana}
+La distribuzione normale o gaussiana è una delle distribuzioni di probabilità più importanti 
+in statistica e probabilità. La sua funzione di densità probabilistica (PDF) è data da:
+\begin{equation}
+    f(x) = \frac{1}{\sigma \sqrt{2\pi}} e^{-\frac{(x - \mu)^2}{2 \sigma^2}}, \quad x \in \mathbb{R},
+\end{equation}
+dove $\mu$ rappresenta la media e $\sigma^2$ la varianza.
+Questa distribuzione emerge naturalmente in numerosi contesti scientifici e 
+tecnici grazie al \textit{Teorema del Limite Centrale}.
+
+\subsection{Legge dei Grandi Numeri in forma di Chebyshev}
+La \textit{Legge dei Grandi Numeri} afferma che la media aritmetica di una sequenza di variabili aleatorie indipendenti
+ e identicamente distribuite (iid) converge alla loro media attesa quando il numero di osservazioni tende all'infinito. 
+ Una formulazione basata sulla disuguaglianza di Chebyshev è la seguente:
+\begin{equation}
+    P\left( \left| \frac{1}{n} \sum_{i=1}^{n} X_i - \mathbb{E}[X] \right| \geq \epsilon \right) \leq \frac{\text{Var}(X)}{n \epsilon^2}, \quad \forall \epsilon > 0,
+\end{equation}
+dove $X_i$ sono variabili aleatorie iid
+con media finita $\mathbb{E}[X]$ e varianza finita $\text{Var}(X)$.
+ Questo implica che all'aumentare di $n$, la probabilità che la media campionaria si discosti dalla media 
+ attesa oltre una certa soglia si riduce.
+
+\subsection{Teorema del Limite Centrale}
+Uno dei risultati fondamentali della teoria della probabilità è il \textit{Teorema del Limite Centrale} (TLC), 
+il quale afferma che, date $X_1, X_2, \dots, X_n$ variabili aleatorie indipendenti e identicamente distribuite 
+con media $\mu$ e varianza finita $\sigma^2$, la variabile normalizzata:
+\begin{equation}
+    Z_n = \frac{\sum_{i=1}^{n} X_i - n\mu}{\sigma \sqrt{n}}
+\end{equation}
+converge in distribuzione a una variabile casuale normale standard $\mathcal{N}(0,1)$ per $n \to \infty$:
+\begin{equation}
+    Z_n \sim \mathcal{N}(0,1).
+\end{equation}
+Questo risultato giustifica l'uso della distribuzione normale in molte applicazioni pratiche, in particolare nella statistica inferenziale e nella teoria dell'approssimazione.

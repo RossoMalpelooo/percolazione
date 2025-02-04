@@ -4,7 +4,7 @@ clc
 
 addpath('2024-10-28');
 
-N = 100;
+N = 1000;
 % p = 0.025:0.025:0.5;
 % p = [p 0.5125:0.0125:0.7 0.725:0.025:1];
 % L = [20 40 60 80];
@@ -97,7 +97,7 @@ for ij = 1:length(L)
     media1=mean(P1);
     errore1=std(P1)./sqrt(length(P1));
     P1=media1;
-    plot(p, P1,'.-');
+    plot(p, errore1,'x', 'LineWidth',2,'MarkerSize',3,'Color','red');
     title('$P_1=\frac{s_{max}}{L^2}$', 'Interpreter','latex','FontSize',20)
     xlabel('$p$','Interpreter','latex','FontSize',18);
     ylabel('$P_1$','Interpreter','latex','FontSize',18);
@@ -108,7 +108,7 @@ for ij = 1:length(L)
     media2=mean(P2);
     errore2=std(P2)./sqrt(length(P2));
     P2=media2;
-    plot(p, P2,'.-')
+    plot(p, errore2,'x', 'LineWidth',2,'MarkerSize',3,'Color','red')
     title('$P_2=\frac{s_{max}}{pL^2}$','Interpreter','latex','FontSize',20)
     xlabel('$p$','Interpreter','latex','FontSize',18);
     ylabel('$P_2$','Interpreter','latex','FontSize',18);
@@ -121,7 +121,7 @@ for ij = 1:length(L)
     media3=mean(P3);
     errore3=std(P3)./sqrt(size(P3,2));
     P3=media3;
-    plot(p, P3,'.-')
+    plot(p, errore3,'x', 'LineWidth',2,'MarkerSize',3,'Color','red')
     title('$P_3 = \frac{s_{max}}{\sum_s s \cdot n_s}$','Interpreter','latex','FontSize',20)
     xlabel('$p$','Interpreter','latex','FontSize',18);
     ylabel('$P_3$','Interpreter','latex','FontSize',18);
@@ -133,7 +133,7 @@ for ij = 1:length(L)
     mediaRacs=mean(racs);
     erroreRacs=std(racs)/sqrt(length(racs));
     racs=mediaRacs; % 
-    plot(p, racs,'.-')
+    plot(p, erroreRacs,'x', 'LineWidth',2,'MarkerSize',3,'Color','red')
     title('$RACS = \frac{\sum_{s\neq s_{max}} s \cdot n_s}{\sum_t t \cdot n_t}$','Interpreter','latex','FontSize',20)
     xlabel('$p$','Interpreter','latex','FontSize',18);
     ylabel('$RACS$','Interpreter','latex','FontSize',18);
@@ -141,7 +141,7 @@ for ij = 1:length(L)
     for pl=[221 222 223 224]
         subplot(pl)
         grid on
-        axis([0 1 0 1]);
+        % axis([0 1 0 0.05]);
     end
 
     %Distribuzione del parametro p_perc (TLC)

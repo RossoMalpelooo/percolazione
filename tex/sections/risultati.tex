@@ -43,7 +43,9 @@ nel primo caso si ``conta'' quante volte la variabile caratteristica ha assunto 
 e si divide il totale per il numero di esperimenti $N$; nel secondo caso si utilizza la 
 funzione built-in di Matlab \texttt{mean(x)}, che svolge gli stessi passaggi.
 Il Cod. \ref{cod:compare} mostra le istruzioni in Matlab per calcolare le quantità 
-mostrate nei due grafici. 
+mostrate nei due grafici. Si è omessa l'implementazione in codice Matlab delle funzioni 
+\texttt{CercaCluster3} e \texttt{CercaClusterHK}, del tutto analoghe all'implementazione 
+mostrata tramite pseudocodice nei Cod. \ref{alg:standard} e \ref{alg:HK}.
 \begin{figure}[ht]
     \includegraphics[width=\columnwidth]{errors.png}
     \caption{Confronto tra le frequenze di percolazione top-down e left-right,
@@ -132,5 +134,15 @@ for ij = 1:length(L)
     racs=mean(racs);
 end
 \end{lstlisting}
+
+Per completezza, si aggiunge anche il grafico in Fig. \ref{fig:dist_errors} che confronta i vari errori 
+ottenuti nel calcolo di ciascuna osservabile. Occorre prestare attenzione alla scala
+sugli assi dei grafici: per questioni pratiche di visualizzazione, si è preferito
+avere risultati più chiari, ma su scale leggermente diverse.
+\begin{figure}[ht]
+    \includegraphics[width=\columnwidth]{dist_errors.png}
+    \caption{Errori ottenuti nel calcolo delle osservabili.}
+    \label{fig:dist_errors}
+\end{figure}
 
 \subsection*{Tempi di esecuzione}

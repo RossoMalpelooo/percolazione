@@ -82,22 +82,22 @@ end
 res.label = res.label(2 : end - 1, 2 : end - 1);
 res.matrice = res.matrice(2 : end - 1, 2 : end - 1);
 
-% auxL = unique(res.label(1:L));
-% left = auxL(auxL > 0);
-% 
-% auxR = unique(res.label(L*(L-1) + 1:L*L));
-% right = auxR(auxR > 0);
-% 
+auxL = unique(res.label(1:L));
+left = auxL(auxL > 0);
+
+auxR = unique(res.label(L*(L-1) + 1:L*L));
+right = auxR(auxR > 0);
+
 % if (~isempty(intersect(left, right)))
 %     res.percolazioneLR = 1;
 % end
-% 
-% auxT = unique(res.label(1:L:L*(L-1) + 1));
-% top = auxT(auxT > 0);
-% 
-% auxB = unique(res.label(L:L:L*L));
-% bottom = auxB(auxB > 0);
-% 
+
+auxT = unique(res.label(1:L:L*(L-1) + 1));
+top = auxT(auxT > 0);
+
+auxB = unique(res.label(L:L:L*L));
+bottom = auxB(auxB > 0);
+
 % if (~isempty(intersect(top, bottom)))
 %     res.percolazioneTB = 1;
 % end

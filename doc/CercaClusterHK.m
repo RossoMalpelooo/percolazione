@@ -38,40 +38,40 @@ res.cluSz=res.lofl(find(res.lofl<0))*-1;
 res.label = res.label(2 : end - 1, 2 : end - 1);
 res.matrice = res.matrice(2 : end - 1, 2 : end - 1);
 
-auxT = unique(res.label(1:L:L*(L-1)+1));
-top = auxT(auxT > 0);
-rootT = [];
-for l=top
-    rootT(end+1)=findGL(l,res.lofl);
-end
-rootT = unique(rootT);
-auxB = unique(res.label(L:L:L*L));
-bottom = auxB(auxB > 0);
-rootB = [];
-for l=bottom
-    rootB(end+1)=findGL(l,res.lofl);
-end
-rootB = unique(rootB);
-if (~isempty(intersect(rootT, rootB)))
-    res.percolazioneTB = 1;
-end
-auxL = unique(res.label(1:L));
-left = auxL(auxL > 0);
-rootL = [];
-for l=left
-    rootL(end+1)=findGL(l,res.lofl);
-end
-rootL = unique(rootL);
-auxR = unique(res.label(L*(L-1) + 1:L*L));
-right = auxR(auxR > 0);
-rootR = [];
-for l=right
-    rootR(end+1)=findGL(l,res.lofl);
-end
-rootR = unique(rootR);
-if (~isempty(intersect(rootL, rootR)))
-    res.percolazioneLR = 1;
-end
+% auxT = unique(res.label(1:L:L*(L-1)+1));
+% top = auxT(auxT > 0);
+% rootT = [];
+% for l=top
+%     rootT(end+1)=findGL(l,res.lofl);
+% end
+% rootT = unique(rootT);
+% auxB = unique(res.label(L:L:L*L));
+% bottom = auxB(auxB > 0);
+% rootB = [];
+% for l=bottom
+%     rootB(end+1)=findGL(l,res.lofl);
+% end
+% rootB = unique(rootB);
+% if (~isempty(intersect(rootT, rootB)))
+%     res.percolazioneTB = 1;
+% end
+% auxL = unique(res.label(1:L));
+% left = auxL(auxL > 0);
+% rootL = [];
+% for l=left
+%     rootL(end+1)=findGL(l,res.lofl);
+% end
+% rootL = unique(rootL);
+% auxR = unique(res.label(L*(L-1) + 1:L*L));
+% right = auxR(auxR > 0);
+% rootR = [];
+% for l=right
+%     rootR(end+1)=findGL(l,res.lofl);
+% end
+% rootR = unique(rootR);
+% if (~isempty(intersect(rootL, rootR)))
+%     res.percolazioneLR = 1;
+% end
 end
 
 function goodLabel=findGL(x,Lofl)
