@@ -43,14 +43,14 @@ probabilità $1-p$ di essere ``chiuso''. Se due siti formano un legame aperto, v
 connessione diretta tra i due. Al contrario, un legame chiuso elimina la connessione.
 In questa versione, ``avviene percolazione'' se esiste un percorso (insieme di connessioni dirette) 
 che attraversa l'intero reticolo. La percolazione può verificarsi 
-sia in verticale (alto-basso) sia in orizzontale (sinistra-destra).
+sia in verticale (top-bottom) sia in orizzontale (left-right).
 
 \subsection*{Percolazione di sito}
 In questo modello ogni sito ha una probabilità $p$ di essere occupato, di conseguenza
-probabilità $1-p$ di essere vuoto. In figura \ref{fig:ex-lattice} viene mostrato un 
+probabilità $1-p$ di essere vuoto. In Fig. \ref{fig:ex-lattice} viene mostrato un 
 reticolo bidimensionale quadrato con nodi occupati (neri) e vuoti (bianchi). Questo è 
 il modello che verrà utilizzato per lo studio dell'argomento e dei vari algoritmi e verrà
-approfondito in dettaglio nella sezione \ref{sec:implementazione}.
+approfondito in dettaglio nella Sez. \ref{sec:implementazione}.
 
 \subsection*{Soglia di percolazione}
 I due modelli appena introdotti rappresentano soluzioni valide per lo studio 
@@ -75,12 +75,12 @@ riflettono anche nel calcolo di alcuni valori caratteristici \cite{weisstein-bon
 \begin{figure}
     \centering
     \includegraphics[width=0.4\textwidth]{threshold.png}
-    \caption{Grafico relativo alla soglia di percolazione ($p_c=0.5$)}
+    \caption{Grafico relativo alla soglia di percolazione ($p_c=0.5$).}
     \label{fig:threshold}
 \end{figure}
 
 È possibile visualizzare il concetto di soglia nel grafico mostrato in 
-figura \ref{fig:threshold}, in cui l'asse delle ascisse è associato alla 
+Fig. \ref{fig:threshold}, in cui l'asse delle ascisse è associato alla 
 probabilità $p$, mentre l'asse delle ordinate è associato alla probabilità
 che avvenga percolazione $p_{perc}$.
 
@@ -115,11 +115,11 @@ del quale è meno probabile che questo si verifichi.
 \end{table}
 
 In letteratura sono presenti diversi studi sulle caratteristiche di vari 
-reticoli e i rispettivi valori di soglia. La tabella \ref{tab:percolation}
+reticoli e i rispettivi valori di soglia. La Tab. \ref{tab:percolation}
 mostra i punti critici per diversi reticoli regolari, ovvero composti
 da elementi ripetuti della stessa forma. La colonna \textbf{Lattice} indica la forma 
 del reticolo, mentre le colonne \textbf{Site} e \textbf{Bond} distinguono i valori 
-in percolazione di sito e di legame, rispettivamente \cite{stauffer-threshold}.
+per percolazione di sito e di legame, rispettivamente \cite{stauffer-threshold}.
 Vi è una lieve, ma evidente, discrepanza tra i valori nelle due colonne.
 In generale, la rappresentazione tramite occupazione dei siti è considerata
 più generica rispetto alla sua controparte, questo perché la percolazione di legame
@@ -127,8 +127,8 @@ può essere riformulata in termini di percolazione di sito,
 ma non si può affermare il contrario.
 I valori affiancati da un asterisco possono essere trovati tramite calcoli analitici,
 grazie ad alcune caratteristiche della forma del reticolo,
-sono quindi considerati \textit{conosciuti}. È interessante notare che la 
-tabella è composta per lo più da valori non conosciuti, cioè valori ottenuti da 
+sono quindi considerati \textit{conosciuti}. È interessante notare come la 
+tabella sia composta per lo più da valori non conosciuti, cioè valori ottenuti da 
 simulazioni al calcolatore.
 
 \subsection*{Cluster-finding}
@@ -162,12 +162,12 @@ Questo tipo di distribuzione è caratterizzato da una funzione di densità
 a 2 parametri
 \begin{equation}
     \mathcal{B}_{n, p}(k) = \binom{n}{k} p^k (1-p)^{n-k}
+    \label{eq:binom}
 \end{equation}
-\label{eq:binom}
 dove $n$ rappresenta il numero di prove e $p$ la probabilità di successo di ciascuna.
 La variabile $k$ indica il risultato di cui vogliamo verificare la probabilità.
-L'equazione \ref{eq:binom} rappresenta \textit{`` la probabilità che si ottengano $k$ successi
-ripetendo $n$ volte una prova con probabilità di successo $p$ ''}.
+L'Eq. \ref{eq:binom} rappresenta \textit{``la probabilità che si ottengano $k$ successi
+ripetendo $n$ volte una prova con probabilità di successo $p$''}.
 
 \subsection{Distribuzione Gaussiana}
 La distribuzione normale o gaussiana è una delle distribuzioni di probabilità più importanti 
@@ -185,6 +185,7 @@ La \textit{Legge dei Grandi Numeri} afferma che la media aritmetica di una seque
  Una formulazione basata sulla disuguaglianza di Chebyshev è la seguente:
 \begin{equation}
     P\left( \left| \frac{1}{n} \sum_{i=1}^{n} X_i - \mathbb{E}[X] \right| \geq \epsilon \right) \leq \frac{\text{Var}(X)}{n \epsilon^2}, \quad \forall \epsilon > 0,
+    \label{eq:chebyshev}
 \end{equation}
 dove $X_i$ sono variabili aleatorie iid
 con media finita $\mathbb{E}[X]$ e varianza finita $\text{Var}(X)$.
@@ -200,6 +201,7 @@ con media $\mu$ e varianza finita $\sigma^2$, la variabile normalizzata:
 \end{equation}
 converge in distribuzione a una variabile casuale normale standard $\mathcal{N}(0,1)$ per $n \to \infty$:
 \begin{equation}
-    Z_n \sim \mathcal{N}(0,1).
+    Z_n \sim \mathcal{N}(0,1)
+    \label{eq:tlc}
 \end{equation}
 Questo risultato giustifica l'uso della distribuzione normale in molte applicazioni pratiche, in particolare nella statistica inferenziale e nella teoria dell'approssimazione.

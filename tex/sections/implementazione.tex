@@ -6,11 +6,11 @@
 In questa relazione verranno discusse proprietà e risultati 
 dell'algoritmo Hoshen-Kopelman \cite{Hoshen-Kopelman}.
 Tuttavia, per dimostrarne la correttezza e provarne l'efficienza,
-verranno effettuati dei confronti con una versione personalizzata,
+verranno effettuati dei confronti con un altro algoritmo di base,
 che chiameremo algoritmo $A$,
 la cui correttezza è ben nota data la sua semplicità.
-Il Cod. \ref{alg:standard} mostra una prima soluzione 
-al problema del partizionamento. È composto da 2 iterazioni principali: 
+L'Alg. \ref{alg:standard} mostra una prima soluzione 
+al problema del partizionamento ed è composto da due iterazioni principali: 
 una ``esterna'' per tutti i siti occupati, una ``interna'' per i siti 
 adiacenti. Quest'ultima si appoggia ad un vettore che 
 funge da \textit{pila}, le cui dimensioni variano in maniera dinamica.
@@ -22,80 +22,10 @@ facilmente della ridondanza causata dalla pila. In altri termini,
 un sito occupato può essere processato più volte:
 \begin{itemize}
     \item una e una sola volta nell'iterazione esterna;
-    \item una volta per ogni vicino occupato;
-    \item altre volte per eventuali ``catene di vicinanze''.
+    \item una volta per ogni vicino occupato.
 \end{itemize}
 
-% Questo dettaglio fa sì che la complessità asintotica temporale \cite{sipser} 
-% dell'algoritmo appartenga alla classe $\bigo{n^4}$ nel caso di un reticolo 
-% bidimensionale $n \times n$. 
-
-% \begin{lstlisting}[caption={Algoritmo standard di cluster-finding}, label={cod:cluster-finding}]
-% function res = CercaCluster3(L, p)
-% res.matrice=zeros(L+2);
-% aux=rand(L)<p;
-% res.matrice(2:end-1,2:end-1)=aux;
-% res.percolazioneTB=0;
-% res.percolazioneLR=0;
-% res.cluSz=[];
-% res.label=zeros(L+2);
-
-% labelC=1;
-% valid=find(res.matrice); % indici occupati
-
-% for iter=1:length(valid)
-%     ii=valid(iter);
-%     if(res.label(ii)==0)
-%         % nuovo cluster, esploro i vicini
-%         pila=ii;
-%         res.label(ii)=labelC;
-%         j=1;
-%         while(j<=length(pila))
-%             elemento=pila(j);
-%             % aggiungo i vicini alla pila
-%             if(res.matrice(elemento-1) && res.label(elemento-1)==0)
-%                 pila(end+1)=elemento-1;
-%                 res.label(elemento-1)=labelC;
-%             end
-%             if(res.matrice(elemento+1) && res.label(elemento+1)==0)
-%                 pila(end+1)=elemento+1;
-%                 res.label(elemento+1)=labelC;
-%             end
-%             if (res.matrice(elemento-L-2) && res.label(elemento-L-2)==0)
-%                 pila(end+1)=elemento-L-2;
-%                 res.label(elemento-L-2)=labelC;
-%             end
-%             if (res.matrice(elemento+L+2) && res.label(elemento+L+2)==0)
-%                 pila(end+1)=elemento+L+2;
-%                 res.label(elemento+L+2)=labelC;
-%             end
-%             j=j+1;
-%         end
-%         res.cluSz(end+1)=length(pila); 
-%         labelC=labelC+1;
-%     end
-% end
-
-
-% res.label=res.label(2:end-1,2:end-1);
-% res.matrice=res.matrice(2:end-1,2:end-1);
-% left = clusters on the left edge
-% right = clusters on the right edge
-% if (~isempty(intersect(left,right)))
-%     res.percolazioneLR=1;
-% end
-
-% auxT = unique(res.label(1:L:L*(L-1)+1));
-% top = auxT(auxT>0);
-% auxB = unique(res.label(L:L:L*L));
-% bottom = auxB(auxB>0);
-% if (~isempty(intersect(top, bottom)))
-%     res.percolazioneTB = 1;
-% end
-% end
-% \end{lstlisting}
-
-\begin{algorithm}
+\begin{algorithm}[H]
     \caption{Pseudocodice dell'algoritmo $A$}
     \label{alg:standard}
     {\small
@@ -153,8 +83,8 @@ un sito occupato può essere processato più volte:
 Come appena accennato, in questa relazione viene presentato l'algoritmo 
 Hoshen-Kopelman, che fa parte della famiglia di algoritmi \textit{union-find},
 utilizzati nel calcolo di componenti connesse e, in questo caso, per il processo 
-di cluster-finding. Questo paradigma prevede l'utilizzo di due procedure principali, che 
-ne compongono il nome:
+di cluster-finding. Questo paradigma prevede l'utilizzo di due procedure principali,
+che ne compongono il nome, in determinati punti del codice:
 \begin{itemize}
     \item \textit{Union}: effettua una fusione tra due insiemi disgiunti quando ci 
     si accorge che appartengono in realtà alla stessa classe di equivalenza;
@@ -207,7 +137,7 @@ ne compongono il nome:
     }
 \end{algorithm}
 
-Nel Cod. \ref{alg:HK} vengono mostrati i passaggi per l'implementazione 
+Nell'Alg. \ref{alg:HK} vengono mostrati i passaggi per l'implementazione 
 del paradigma nel contesto della percolazione \cite{pseudoHK}.
 Rispetto all'algoritmo iniziale, rimane un'iterazione sui siti per verificarne
 l'occupazione, ma appare diversa la logica applicata. In particolare, scompare
@@ -224,36 +154,38 @@ Infatti, in questo procedimento si possono avere siti di uno
 stesso cluster con etichette diverse (provare per credere!).
 Quest'ultimo punto è cruciale: è necessario tenere conto di questa informazione
 senza impattare negativamente sul costo computazionale dell'algoritmo; una rinomina
-totale delle etichette sarebbe infatti troppo costosa e si perderebbe parte del vantaggio
-ottenuto rispetto all'algoritmo $A$.
-Per coprire questo aspetto, per ogni cluster si sceglie una etichetta 
+totale delle etichette sarebbe infatti troppo costosa e si perderebbe il vantaggio
+ottenuto rispetto ad $A$.
+Per coprire questo aspetto, per ogni cluster dovrà esserci una etichetta 
 ``di rappresentanza'', che chiameremo \textit{good label}. Ogni altra etichetta viene 
 considerata una \textit{bad label} e deve essere in qualche modo collegata alla rispettiva
 \textit{good label}. Il metodo di collegamento scelto consiste nell'utilizzo di un array 
 $Lofl$ (Label of label), che viene aggiornato durante l'esecuzione. 
 A questo proposito, entrano in gioco le nuove procedure:
 \begin{itemize}
-    \item \textit{Union}: ha il compito di collegare una \textit{bad label} ad una 
-    potenziale\footnotemark{} \textit{good label} e viene descritta facilmente in termini di \textit{Find};
+    \item \textit{Union}: ha il compito di collegare due etichette\footnotemark{} in modo che facciano 
+    riferimento alla stessa \textit{good label} e viene descritta facilmente in termini di \textit{Find};
     \item \textit{Find}: viene implementata come iterazione di punto fisso 
         della funzione rappresentata dall'array $Lofl$. In 
         altri termini, si cerca in modo iterativo la condizione di arresto $Lofl[x]=x$.
 \end{itemize}
-\footnotetext{Il termine ``potenziale'' fa riferimento al fatto che non sia possibile 
-sapere se l'etichetta minore sia effettivamente una \textit{good label}, 
-perché potrebbe a sua volta far parte di un altro collegamento. Tuttavia, si può dire che tramite una catena di 
-collegamenti è possibile risalire alla \textit{good label}.}
+\footnotetext{Vanno collegate le \textit{good label} attuali delle etichette dei siti $above$ e $left$. Infatti,
+questa procedura viene svolta solo quando entrambi i siti sono occupati ed hanno diverse etichettature. }
+% \footnotetext{Il termine ``potenziale'' fa riferimento al fatto che non sia possibile 
+% sapere se l'etichetta minore sia effettivamente una \textit{good label}, 
+% perché potrebbe a sua volta far parte di un altro collegamento. Tuttavia, si può dire che tramite una catena di 
+% collegamenti è possibile risalire alla \textit{good label}.}
 
 \subsection*{Stime della soglia ed errori associati}
 Per stabilire in maniera formale se esista o meno un cluster percolante (ricordiamo: un cluster 
 percolante attraversa l'intero reticolo), va fatto un confronto tra le etichette presenti sui bordi
 del reticolo: se esiste almeno un'etichetta presente su due bordi opposti, significa che il cluster 
-identificato da esso attraversa il reticolo in quella direzione. 
+identificato da essa attraversa il reticolo in quella direzione. 
 Nell'algoritmo $A$ è sufficiente confrontare le etichette, mentre per Hoshen-Kopelman occorre 
 confrontare le \textit{good label} dei siti presenti sui bordi.
 Il processo consiste nel verificare che vi sia una intersezione non nulla tra le etichette 
 presenti sul bordo sinistro e quelle sul bordo destro (left-right) oppure, in maniera analoga,
-tra il bordo più alto e quello più basso (top-bottom).
+tra il bordo in alto e quello in basso (top-bottom).
 Un paragone tra le rilevazioni dei due algoritmi mostrerà come i risultati ottenuti nei due casi 
 siano perfettamente coincidenti.
 % \begin{figure}[ht]
@@ -266,13 +198,13 @@ definire valori dei parametri richiesti nella simulazione e iterare su di essi.
 Si è definito un array $L = [20,60,40,80]$ per le dimensioni.
 Si è costruito un array $p$ per le probabilità di occupazione, tramite punti non equidistanti:
 \begin{enumerate}
-    \item $p_a = [0.025:0.025:0.5]$;
-    \item $p_b = [0.5125:0.0125:0.7]$;
-    \item $p_c = [0.725:0.025:1]$;
-    \item $p = [p_a,p_b,p_c]$.
+    \item $p_a = 0.025:0.025:0.5$;
+    \item $p_b = 0.5125:0.0125:0.7$;
+    \item $p_c = 0.725:0.025:1$;
+    \item $p = [p_a\;p_b\;p_c]$.
 \end{enumerate}
 La sintassi utilizzata richiama volontariamente quella del linguaggio Matlab: 
-la scritta $[inf : inc : sup]$ indica una serie di valori che parte da $inf$ e arriva
+la scritta $inf : inc : sup$ indica una serie di valori che parte da $inf$ e arriva
 a $sup$, tramite un incremento costante $inc$.
 Si è scelto infine un numero arbitrario $N$ di iterazioni per determinare, fissando 
 i parametri precedenti, la frequenza
@@ -302,17 +234,17 @@ Ma che tipo di binomiale? Si potrebbe attribuire $n=N$ e chiaramente siamo inter
 Tuttavia, non si conoscono i valori esatti del parametro $p_{perc}$ sulla probabilità di percolazione e 
 occorre quindi procedere per \textit{stime}.
 Il fatto che la frequenza di percolazione sia significativa rispetto alla probabilità 
-della stessa è garantito, per input sufficientemente grandi, dalla \textbf{\textit{Legge dei Grandi Numeri}}
-espressa in forma di Chebyshev \cite{big-numbers, chebyshev}.
+della stessa è garantito, per input sufficientemente grandi, dalla Legge dei Grandi Numeri
+espressa in forma di Chebyshev \cite{lgn-chebyshev}.
 L'affidabilità delle misurazioni effettuate è invece discussa per mezzo del 
-\textbf{\textit{Teorema del Limite Centrale (TLC)}} \cite{tlc}.
+Teorema del Limite Centrale (TLC) \cite{tlc}.
 Questi strumenti matematici permettono di affermare proprietà statistiche sulle 
 stime del parametro $p_{perc}$ e sull'errore associato. Formalmente, si calcola 
 la media aritmetica sugli esperimenti come 
 \begin{equation}
     f_{perc} = \frac{n_{perc}}{N} = \frac{1}{N} \sum_{i=1}^{N} t(i)
 \end{equation}
-Sappiamo da \ref{eq:lgn} che, per $N$ sufficientemente grande, $f_p$ converge 
+Sappiamo dall'Eq. \ref{eq:chebyshev} che, per $N$ sufficientemente grande, $f_p$ converge 
 in probabilità al valore atteso di $T$. Inoltre, la varianza associata è
 \begin{equation}
     D_{f_{perc}} = \frac{1}{N^2} \sum_{i=1}^{N} {D}_T = \frac{{D}_T}{N}
@@ -323,7 +255,7 @@ in Matlab seguendo le misurazioni del campione:
 \begin{equation}
     \tilde{D}_T = D_t = \frac{1}{N-1} \sum_{i}^{N} \left(t(i) - f_{perc}\right)^2
 \end{equation}
-Ci si avvale a questo punto anche dell'equazione \ref{eq:tlc} e ne consegue che 
+Ci si avvale a questo punto anche dell'Eq. \ref{eq:tlc} e ne consegue che 
 \begin{equation}
     f_{perc} \sim \mathcal{N}(\sigma^2, \mu) = \frac{1}{\sqrt{2\pi\sigma^2}} e^{-\frac{(x - \mu)^2}{2\sigma^2}}
 \end{equation}
@@ -331,10 +263,10 @@ o, in altri termini, la frequenza di percolazione rilevata nella simulazione seg
 di distribuzione gaussiana. 
 Si può dire di più: i parametri della funzione sono proprio le stime effettuate sul campione.
 Questi passaggi risultano molto importanti perché permettono di ricondurre
-esperimenti ``arbitrari'' a casistiche ben note. Sostanzialmente, conoscendo la natura
+esperimenti ``arbitrari'' a casistiche ben note. Sostanzialmente, dato che conosciamo la natura
 della distribuzione gaussiana, ci è concesso affermare che valori lontani 
 dalla media $\mu=f_{perc}$ per più di $3\sigma$, dove $\sigma=\sqrt{\tilde{D}_T}$, possano essere esclusi
-dai candidati per il valore esatto $p_{perc}$. Partendo dai campioni restituiti dalla simulazione,
+dai candidati per il valore atteso di $p_{perc}$. Partendo dai campioni restituiti dalla simulazione,
 si è quindi arrivati a costruire un \textit{intervallo di confidenza} all'interno del quale il valore ricercato ha probabilità 
 $1-\alpha$ di apparire, dove $\alpha$ rappresenta l'area sottesa dalla funzione di densità $f_{perc}$ negli intervalli $(-\infty, \mu - 3\sigma)$
 e $(\mu + 3\sigma, +\infty)$.
@@ -348,8 +280,8 @@ In Fig. \ref{fig:f_perc_pdf} è mostrato un esempio grafico per capire meglio il
 \subsection*{Altre osservabili}
 Si può svolgere il procedimento di stima dei parametri di una distribuzione non conosciuta anche per 
 altre quantità, dette ``osservabili''. Ognuna di queste, nel nostro caso, è riconducibile ad una 
-funzione gaussiana per lo stesso motivo descritto nel paragrafo precedente legato a TLC.
-Anche la correttezza della stima si discute nel senso di convergenza in probabilità, come già mostrato.
+funzione gaussiana per lo stesso motivo descritto nel paragrafo precedente.
+Anche la correttezza della stima si discute nel senso di convergenza a una distribuzione normale, come già mostrato.
 Di seguito è esposta una panoramica delle osservabili studiate, oltre alla frequenza di percolazione.
 \subsubsection*{$P_1$}
 Rappresenta la probabilità che il cluster più grande trovato (dimensione $s_{max}$) sia grande 
@@ -362,7 +294,7 @@ fino a $p=1$, dove sicuramente vi sarà un unico cluster di dimensione $s_{max}$
 \subsubsection*{$P_2$}
 Rappresenta la probabilità che il cluster più grande trovato sia grande 
 quanto il numero medio di siti occupati. Occorre fare una precisazione:
-I valori di questa quantità potrebbero essere superiori ad 1, poiché il 
+i valori di questa quantità potrebbero essere superiori ad 1, poiché il 
 denominatore è soltato una stima tramite valore medio (numero di siti 
 moltiplicati per la probabilità di occupazione).
 Anche in questo caso, comunque, ci si aspetta un andamento simile al precedente.
@@ -381,9 +313,9 @@ soprattutto per un numero elevato di tentativi, rimane molto simile.
 \subsubsection*{$RACS$}
 Rappresenta la probabilità che un sito appartenga ad un cluster che non sia quello 
 di dimensone massima. In questo caso, ci si aspetta un andamento ``opposto'' rispetto 
-alle altre quantità: per probabilità alte di occupazione è più probabile avere un cluster
-che sia molto più grande degli altri, di conseguenza la probabilità che un sito vi appartenga 
-è più bassa.
+alle altre quantità: per probabilità alte di occupazione ci si aspetta di avere un cluster
+che sia molto più grande degli altri, di conseguenza la probabilità che un sito non vi appartenga 
+si abbassa.
 \begin{equation}
     RACS = \frac{\sum_{s\neq s_{max}} s \cdot n_s}{\sum_t t \cdot n_t}
 \end{equation}

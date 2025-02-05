@@ -3,8 +3,8 @@ I risultati ottenuti tramite Matlab sono stati valutati in termini di coerenza c
 le nozioni teoriche esposte fino ad ora. In particolare, si discuterà a proposito di:
 \begin{itemize}
     \item confronto tra gli output dei due algoritmi descritti;
-    \item confronto tra i tempi di esecuzione dei due algoritmi;
     \item quantità ottenute nel calcolo delle osservabili, con i rispettivi errori;
+    \item confronto tra i tempi di esecuzione dei due algoritmi.
 \end{itemize}
 
 \subsection*{Correttezza dell'algoritmo HK}
@@ -19,7 +19,7 @@ Quest'ultima è considerata un parametro di input per una funzione $f(x)$ ed è
 quindi riscontrabile sull'asse delle ascisse. 
 \begin{figure}[ht]
     \includegraphics[width=0.9\columnwidth]{compare_threshold_1.png}
-    \caption{Confronto tra le frequenze di percolazione top-down ottenute nell'esecuzione
+    \caption{Confronto tra le frequenze di percolazione top-bottom ottenute nell'esecuzione
     dei due algoritmi.}
     \label{fig:compare_threshold}
 \end{figure}
@@ -27,17 +27,17 @@ Risulta interessante eseguire un confronto con la Fig. \ref{fig:threshold}
 relativa al reticolo di taglia infinita: per dimensioni del reticolo più grandi, ci 
 si avvicina infatti al suddetto grafico.
 Un'altra caratteristica importante da verificare è che le frequenze di 
-percolazione top-down registrate coincidano con quelle left-right, nel limite 
+percolazione top-bottom registrate coincidano con quelle left-right, nel limite 
 dell'errore commesso. Le modalità di svolgimento sono le stesse, con l'aggiunta 
 delle misurazioni dell'errore, calcolato come radice quadrata della quantità 
 $D_{f_{perc}}$ descritta nell'Eq. \ref{eq:d_f_perc}.
 Nel grafico in Fig. \ref{fig:th_errors} viene mostrato un confronto tra i valori 
 ottenuti nei due casi con l'algoritmo HK. Ciò che balza all'occhio è la 
-superiorità degli errori intorno a $0.6$, valore in cui, tra l'altro, 
+superiorità degli errori intorno a $0.6$, valore attorno al quale 
 si osserva una crescita piuttosto rapida della frequenza di percolazione.
-Si compone di 3 iterazioni: una per variare la 
+Si compone di tre iterazioni: una per variare la 
 taglia del reticolo, una per variare la probabilità di occupazione e un'ultima per 
-eseguire un numero sufficiente di esperimenti perché i risultati siano significativi.
+eseguire un numero sufficiente di esperimenti affinché i risultati siano significativi.
 Le frequenze dei due algoritmi sono calcolate con metodi diversi ma equivalenti:
 nel primo caso si ``conta'' quante volte la variabile caratteristica ha assunto valore 1
 e si divide il totale per il numero di esperimenti $N$; nel secondo caso si utilizza la 
@@ -45,17 +45,17 @@ funzione built-in di Matlab \texttt{mean(x)}, che svolge gli stessi passaggi.
 Il Cod. \ref{cod:compare} mostra le istruzioni in Matlab per calcolare le quantità 
 mostrate nei due grafici. Si è omessa l'implementazione in codice Matlab delle funzioni 
 \texttt{CercaCluster3} e \texttt{CercaClusterHK}, del tutto analoghe all'implementazione 
-mostrata tramite pseudocodice nei Cod. \ref{alg:standard} e \ref{alg:HK}. \\
+mostrata tramite pseudocodice negli Alg. \ref{alg:standard} e \ref{alg:HK}. \\
 
 
 \begin{figure}[ht]
     \includegraphics[width=\columnwidth]{errors.png}
-    \caption{Confronto tra le frequenze di percolazione top-down e left-right,
+    \caption{Confronto tra le frequenze di percolazione top-bottom e left-right,
     con rispettivi errori.}
     \label{fig:th_errors}
 \end{figure}
 \begin{lstlisting}[caption={Porzione di codice relativa al confronto tra algoritmi e 
-    alla frequenza di percolazione top-down e left-right.}, label={cod:compare}]
+    alla frequenza di percolazione top-bottom e left-right.}, label={cod:compare}]
 for ij = 1:length(L)
     for ii = 1:length(p)
         pp = p(ii);
@@ -69,13 +69,11 @@ for ij = 1:length(L)
             ret = rand(L(ij))<pp;
             res3 = CercaCluster3(ret);
             resHK = CercaClusterHK(ret);
-
             s3TB = s3TB + res3.percolazioneTB;
             s3LR = s3LR + res3.percolazioneLR;
             espTB(j) = resHK.percolazioneTB;
             espLR(j) = resHK.percolazioneLR;
         end
-
         probPercTB3(ij,ii) = s3TB / N;
         probPercLR3(ij,ii) = s3LR / N;
         probPercTBHK(ij,ii) = mean(espTB);
@@ -92,7 +90,7 @@ le altre osservabili. In Fig. \ref{fig:distributions} si possono riscontrare i c
 attesi, descritti nella sezione precedente.
 Anche in questo caso, viene acclusa l'implementazione in Matlab nel Cod. \ref{cod:distributions}.
 Insieme alle quantità, vengono calcolati anche i rispettivi errori, con tecniche analoghe a quanto visto 
-fin ora. Per queste quantità valgono le stesse considerazioni fatte sulla natura di $f_{perc}$,
+fin ora. Per queste quantità valgono infatti le stesse considerazioni fatte sulla natura di $f_{perc}$,
 legate alla validità della media e varianza garantita per mezzo di 
 TLC e Legge dei Grandi Numeri.
 \begin{figure}[ht]
@@ -138,7 +136,7 @@ end
 \end{lstlisting}
 
 Per completezza, si aggiunge anche il grafico in Fig. \ref{fig:dist_errors} che confronta i vari errori 
-ottenuti nel calcolo di ciascuna osservabile. Occorre prestare attenzione alla scala
+ottenuti nel calcolo di ciascuna. Occorre prestare attenzione alla scala
 sugli assi dei grafici: per questioni pratiche di visualizzazione, si è preferito
 avere risultati più chiari, ma su scale leggermente diverse.
 \begin{figure}[ht]
@@ -157,7 +155,7 @@ differenze di costo computazionale, a causa dei seguenti svantaggi (almeno per q
     \item ricorsione: le strutture dati utilizzate per 
         rappresentare il controllo di flusso non sempre sono adatte a sostenere lo spazio 
         richiesto da chiamate ricorsive;
-    \item tic toc: il metodo per misurare i tempi di esecuzione non ha un buon funzionamento 
+    \item ``tic toc'': è il metodo per misurare i tempi di esecuzionein Matlab; non ha un buon funzionamento 
         in caso di quantità elevate di prove ripetute, soprattutto se molto vicine tra loro.
 \end{itemize}
 In fondo, Matlab rimane un linguaggio relativamente di alto livello rispetto 
@@ -186,10 +184,11 @@ dove $D=[5 \; 10 \; 20 \; 30 \; 40]$ è l'array delle dimensioni e $P$ è l'arra
 occupazione.
 
 I primi due grafici rappresentano proprio le due matrici ottenute, dove gli assi $y$ sono in scala 
-logaritmica per avere un confronto visivo migliore. I diversi colori indicano le dimensioni dei reticoli 
-degli esperimenti. Anche se di poco, in generale si notano tempi minori nell'algoritmo $HK$.
+logaritmica per avere un confronto visivo migliore. I colori indicano le diverse dimensioni dei reticoli 
+negli esperimenti. Anche se di poco, in generale si notano tempi minori nell'algoritmo $HK$.
 Nel terzo grafico viene fatta una media sulle dimensioni, in modo che rimangano solo due serie di dati da confrontare.
 In pratica, si può pensare alle quantità mostrate nel terzo grafico come ``medie'' di quelle mostrate nei primi due.
-Nell'ultimo caso, invece, la media viene fatta sulle probabilità e la lunghezza delle serie di dati da confrontare è 
-5, come il numero di dimensioni. Anche in questo caso, le tempistiche di $HK$ sono minori rispetto ad $A$, come 
+Nell'ultimo caso, invece, la media viene fatta sulle probabilità e la lunghezza delle due serie di dati da confrontare è 
+di 5 elementi, come il numero elementi nell'array delle dimensioni. 
+Anche in questo caso, le tempistiche di $HK$ sono minori rispetto ad $A$, come 
 si aveva ragione di credere.
