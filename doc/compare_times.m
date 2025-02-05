@@ -32,16 +32,43 @@ end
 
 subplot(221);
 semilogy(time3,'.-');
+ylim([0 10^-2])
 title('A');
 grid on
 subplot(222);
 semilogy(timeHK,'.-');
+ylim([0 10^-2])
 title('HK');
 grid on;
 
-subplot(2,2,[3 4]);
-plot(mean(timeHK,2),'.-');
+subplot(2,2,3);
+numPoints = numel(p);                % Number of points
+newX = 1:numPoints;                  % Evenly spaced indices
+barWidth = 0.4;                      % Adjust bar width
+bar(newX - barWidth/2, mean(timeHK,2), barWidth, 'b'); % Shift left (HK)
 hold on;
-plot(mean(time3,2),'.-');
-legend('HK', 'A')
+bar(newX + barWidth/2, mean(time3,2), barWidth, 'r');  % Shift right (A)
+hold off;
+xticks(newX);                         % Keep tick marks consistent
+xticklabels(string(p));               % Use original p values as labels
+xlabel('Data Points');
+ylabel('Mean Time');
+legend('HK', 'A', 'Location', 'northwest');
 grid on;
+title('Comparison of HK and A');
+
+subplot(2,2,4);
+numPoints = numel(D);                % Number of points
+newX = 1:numPoints;                  % Evenly spaced indices
+barWidth = 0.4;                      % Adjust bar width
+bar(newX - barWidth/2, mean(timeHK), barWidth, 'b'); % Shift left (HK)
+hold on;
+bar(newX + barWidth/2, mean(time3), barWidth, 'r');  % Shift right (A)
+hold off;
+xticks(newX);                         % Keep tick marks consistent
+xticklabels(string(D));               % Use original p values as labels
+xlabel('Data Points');
+ylabel('Mean Time');
+legend('HK', 'A', 'Location', 'northwest');
+grid on;
+title('Comparison of HK and A');
